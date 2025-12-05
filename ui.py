@@ -28,7 +28,7 @@ class CAMControlPanel(Panel):
             row.scale_y = 2
             connected = props.connected
             text = "Status: Connected" if connected else "Status: No Connection"
-            icon = "SEQUENCE_COLOR_01" if not connected else "SEQUENCE_COLOR_04"
+            icon = "STRIP_COLOR_01" if not connected else "STRIP_COLOR_04"
             row.label(text=text, icon=icon)
             icon = "UNLINKED" if not props.connected else "LINKED"
             row.label(text="", icon=icon)
@@ -73,17 +73,17 @@ class CAMControlPanel(Panel):
             column = box.column(align=True)
             column.alignment = "CENTER"
             row = column.row(align=True)
-            row.label(text="", icon="SEQUENCE_COLOR_01")
+            row.label(text="", icon="STRIP_COLOR_01")
             row.label(text=str(props.x_position), icon="EVENT_X")
             row.operator("cnc.move_to_x_zero", text="Go To X0")
             row.operator("cnc.current_x_to_zero", text="Set X=0")
             row = column.row(align=True)
-            row.label(text="", icon="SEQUENCE_COLOR_04")
+            row.label(text="", icon="STRIP_COLOR_04")
             row.label(text=str(props.y_position), icon="EVENT_Y")
             row.operator("cnc.move_to_y_zero", text="Go To Y0")
             row.operator("cnc.current_y_to_zero", text="Set Y=0")
             row = column.row(align=True)
-            row.label(text="", icon="SEQUENCE_COLOR_05")
+            row.label(text="", icon="STRIP_COLOR_05")
             row.label(text=str(props.z_position), icon="EVENT_Z")
             row.operator("cnc.move_to_z_zero", text="Go To Z0")
             row.operator("cnc.current_z_to_zero", text="Set Z=0")
