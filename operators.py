@@ -1,12 +1,39 @@
 import serial
 import bpy
 import time
+import socket
 from bpy.types import Operator
 
 
 def serial_command(context, command):
     command = f"{command} \n".encode("utf-8")
     context.scene.connection.write(command)
+
+
+class TcpSerial():
+    def __init__(self, host_port):
+        host, port = host_port.split(":")
+        port = int(port) if port else 23
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect((host, port))
+
+    def write(self, data):
+        self.sock.sendall(data)
+
+    def readline(self):
+        data = b""
+        while not data.endswith(b"\n"):
+            chunk = self.sock.recv(1)
+            if not chunk:
+                break
+            data += chunk
+        return data
+
+    def flushInput(self):
+        pass
+
+    def close(self):
+        self.sock.close()
 
 
 # Connect/Disconnect Machine
@@ -21,7 +48,10 @@ class ConnectMachine(Operator):
         port = props.port
         rate = int(props.rate)
 
-        bpy.types.Scene.connection = serial.Serial(port=port, baudrate=rate)
+        if "com" in port.lower() or "tty" in port.lower():
+            bpy.types.Scene.connection = TcpSerial(port)
+        else:
+            bpy.types.Scene.connection = serial.Serial(port=port, baudrate=rate)
 
         context.scene.connection.write("\r\n\r\n".encode("utf-8"))
         time.sleep(2)
