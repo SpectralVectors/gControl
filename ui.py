@@ -33,8 +33,10 @@ class CAMControlPanel(Panel):
             icon = "UNLINKED" if not props.connected else "LINKED"
             row.label(text="", icon=icon)
             column = box.column(align=True)
+            column.prop(props, "connection_type")
             column.prop(props, "port")
-            column.prop(props, "rate")
+            if props.connection_type == "SERIAL":
+                column.prop(props, "rate")
             operator = "cnc.connect_machine" if not props.connected else "cnc.disconnect_machine"
             row = main_column.row()
             row.scale_y = 2

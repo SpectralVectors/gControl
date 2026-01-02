@@ -8,6 +8,15 @@ def update_job(self, context):
 
 class CNCControlProperties(PropertyGroup):
 
+    connection_type: EnumProperty(
+        name="Type",
+        default="SERIAL",
+        items=[
+            ("SERIAL", "Serial", "Connect via Serial Bus"),
+            ("TCP", "TCP", "Connect via TCP (Transmission Control Protocol)"),
+        ],
+    )
+
     port: StringProperty(
         name="Port",
         default="/dev/ttyACM0",

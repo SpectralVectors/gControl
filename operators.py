@@ -10,7 +10,7 @@ def serial_command(context, command):
     context.scene.connection.write(command)
 
 
-class TcpSerial():
+class TcpSerial:
     def __init__(self, host_port):
         host, port = host_port.split(":")
         port = int(port) if port else 23
@@ -48,10 +48,11 @@ class ConnectMachine(Operator):
         port = props.port
         rate = int(props.rate)
 
-        if "com" in port.lower() or "tty" in port.lower():
-            bpy.types.Scene.connection = TcpSerial(port)
-        else:
-            bpy.types.Scene.connection = serial.Serial(port=port, baudrate=rate)
+        bpy.types.Scene.connection = (
+            TcpSerial(port)
+            if props.connection_type == "TCP"
+            else serial.Serial(port=port, baudrate=rate)
+        )
 
         context.scene.connection.write("\r\n\r\n".encode("utf-8"))
         time.sleep(2)
